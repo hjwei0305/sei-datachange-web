@@ -14,9 +14,9 @@ export default [
       { path: '/', redirect: '/dashboard' },
       { path: '/dashboard', component: './Dashboard' },
       {
-        path: '/moduleName',
-        name: 'moduleName',
-        routes: [{ path: '/moduleName/demo', component: './Demo' }],
+        path: '/data',
+        name: 'data',
+        routes: [{ path: '/data/audit', component: './DataAudit' }],
       },
     ],
   },

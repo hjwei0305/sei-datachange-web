@@ -11,12 +11,17 @@ const { SubMenu } = Menu;
 const menuData = [
   {
     id: '10',
-    name: 'moduleName',
+    name: '本地登录',
+    path: '/user/login',
+  },
+  {
+    id: '20',
+    name: '数据变更日志',
     children: [
       {
-        id: '100',
-        name: 'menuName',
-        path: '/moduleName/demo',
+        id: '200',
+        name: '数据审计',
+        path: '/data/audit',
       },
     ],
   },

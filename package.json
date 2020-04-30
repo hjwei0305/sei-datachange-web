@@ -1,6 +1,6 @@
 {
   "name": "sei-datachange-web",
-  "title":"sei-datachange-web",
+  "title": "sei-datachange-web",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -30,7 +30,8 @@
     "qs": "^6.9.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "suid": "^1.2.27",
+    "react-highlight-words": "^0.16.0",
+    "suid": "^1.2.47",
     "umi-plugin-react": "^1.8.4"
   },
   "devDependencies": {
@@ -64,7 +65,9 @@
     }
   },
   "lint-staged": {
-    "**/*.less": ["stylelint --fix --syntax less"],
+    "**/*.less": [
+      "stylelint --fix --syntax less"
+    ],
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write",
       "git add"

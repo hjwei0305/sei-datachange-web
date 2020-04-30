@@ -2,7 +2,7 @@
  * @Author: Eason
  * @Date: 2020-02-21 18:03:16
  * @Last Modified by: Eason
- * @Last Modified time: 2020-04-26 14:20:38
+ * @Last Modified time: 2020-04-29 10:33:43
  */
 import { base } from '../../public/app.config.json';
 
@@ -52,10 +52,18 @@ const APP_MODULE_BTN_KEY = {
   DELETE: `${APP_BASE}_DELETE`,
 };
 
+/** 操作类型枚举 */
+const OPERATION_CATEGORY = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE',
+};
+
 export default {
   APP_BASE,
   LOCAL_PATH,
   SERVER_PATH,
   APP_MODULE_BTN_KEY,
   LOGIN_STATUS,
+  OPERATION_CATEGORY,
 };
