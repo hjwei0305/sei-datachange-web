@@ -48,25 +48,8 @@ class DataAuditHome extends PureComponent {
     this.listCardRef.handlerSearch();
   };
 
-  handlerSelectChange = (keys, confirm, clearFilters) => {
-    const { dispatch } = this.props;
-    const [className = ''] = keys;
-    if (className) {
-      confirm();
-    } else {
-      clearFilters();
-    }
-    dispatch({
-      type: 'dataAudit/updateState',
-      payload: {
-        className,
-      },
-    });
-  };
-
   handleColumnSearch = (selectedKeys, dataIndex, confirm) => {
     const { dispatch } = this.props;
-    console.log(dataIndex);
     confirm();
     dispatch({
       type: 'dataAudit/updateState',
@@ -91,7 +74,7 @@ class DataAuditHome extends PureComponent {
     this.searchValue[dataIndex] = trim(e.target.value);
   };
 
-  renderCustomTool = () => (
+  renderCustomTool = (dataIndex, clearFilters) => (
     <>
       <Search
         placeholder="可输入关键字查询"
@@ -100,66 +83,86 @@ class DataAuditHome extends PureComponent {
         onPressEnter={this.handlerSearch}
         style={{ width: '100%' }}
       />
+      <Button
+        onClick={() => this.handleColumnSearchReset(dataIndex, clearFilters)}
+        style={{ width: 90, marginLeft: 8 }}
+      >
+        重置
+      </Button>
     </>
   );
 
-  renderEntityNameFilter = ({ confirm, clearFilters }) => {
-    const { dataAudit } = this.props;
-    const { entityNames } = dataAudit;
-    const entityNameProps = {
-      className: 'search-content',
-      dataSource: entityNames,
-      searchProperties: ['entityName'],
-      showArrow: false,
-      showSearch: false,
-      rowKey: 'className',
-      allowCancelSelect: true,
-      onSelectChange: keys => this.handlerSelectChange(keys, confirm, clearFilters),
-      customTool: this.renderCustomTool,
-      onListCardRef: ref => (this.listCardRef = ref),
-      itemField: {
-        title: item => item.entityName,
-      },
-    };
+  getColumnSearchComponent = (dataIndex, setSelectedKeys, selectedKeys, confirm, clearFilters) => {
+    if (dataIndex === 'className') {
+      const { dataAudit } = this.props;
+      const { entityNames } = dataAudit;
+      const entityNameProps = {
+        className: 'search-content',
+        dataSource: entityNames,
+        searchProperties: ['entityName'],
+        showArrow: false,
+        showSearch: false,
+        rowKey: 'className',
+        allowCancelSelect: true,
+        selectedKeys,
+        onSelectChange: keys => {
+          setSelectedKeys(keys);
+          this.handleColumnSearch(keys, dataIndex, confirm);
+        },
+        customTool: () => this.renderCustomTool(dataIndex, clearFilters),
+        onListCardRef: ref => (this.listCardRef = ref),
+        itemField: {
+          title: item => item.entityName,
+        },
+      };
+      return (
+        <div style={{ padding: 8, maxHeight: 360, height: 360 }}>
+          <ListCard {...entityNameProps} />
+        </div>
+      );
+    }
     return (
-      <div style={{ padding: 8, maxHeight: 360, height: 360 }}>
-        <ListCard {...entityNameProps} />
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder="输入关键字查询"
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleColumnSearch(selectedKeys, dataIndex, confirm)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleColumnSearch(selectedKeys, dataIndex, confirm)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          搜索
+        </Button>
+        <Button
+          onClick={() => this.handleColumnSearchReset(dataIndex, clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          重置
+        </Button>
       </div>
     );
   };
 
   getColumnSearchProps = dataIndex => {
     return {
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={node => {
-              this.searchInput = node;
-            }}
-            placeholder="输入关键字查询"
-            value={selectedKeys[0]}
-            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleColumnSearch(selectedKeys, dataIndex, confirm)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => this.handleColumnSearch(selectedKeys, dataIndex, confirm)}
-            icon="search"
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >
-            搜索
-          </Button>
-          <Button
-            onClick={() => this.handleColumnSearchReset(dataIndex, clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            重置
-          </Button>
-        </div>
-      ),
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) =>
+        this.getColumnSearchComponent(
+          dataIndex,
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters,
+        ),
       onFilterDropdownVisibleChange: visible => {
         if (visible) {
           setTimeout(() => this.searchInput.select());
@@ -193,8 +196,7 @@ class DataAuditHome extends PureComponent {
         dataIndex: 'entityName',
         width: 220,
         required: true,
-        filteredValue: className,
-        filterDropdown: this.renderEntityNameFilter,
+        ...this.getColumnSearchProps('className'),
       },
       {
         title: '变更类型',
@@ -276,8 +278,6 @@ class DataAuditHome extends PureComponent {
       },
       remotePaging: true,
       showSearch: false,
-      // searchWidth: 380,
-      // searchPlaceHolder: '可输入变更人或账号、变更字段或代码关键字查询',
       onTableRef: ref => (this.tableRef = ref),
       sort: {
         field: {
