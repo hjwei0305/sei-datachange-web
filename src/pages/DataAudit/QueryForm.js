@@ -40,7 +40,7 @@ class FormModal extends PureComponent {
     };
     return (
       <Form layout="inline">
-        <FormItem label="变更期间" {...formItemInlineLayout}>
+        <FormItem label="变更期间" {...formItemInlineLayout} labelAlign="left">
           {getFieldDecorator('periodDate', {
             initialValue: [get(queryData, 'startTime'), get(queryData, 'endTime')],
           })(<ScopeDatePicker {...scopeDatePickerProps} />)}
