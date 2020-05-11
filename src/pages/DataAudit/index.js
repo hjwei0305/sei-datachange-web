@@ -256,6 +256,7 @@ class DataAuditHome extends PureComponent {
       query: this.query,
     };
     const toolBarProps = {
+      layout: { leftSpan: 24 },
       left: (
         <Fragment>
           <QueryForm {...queryFormProps} />
