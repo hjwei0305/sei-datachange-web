@@ -44,8 +44,12 @@ class DataAuditHome extends PureComponent {
     this.listCardRef.handlerSearchChange(v);
   };
 
-  handlerSearch = () => {
-    this.listCardRef.handlerSearch();
+  handlerPressEnter = () => {
+    this.listCardRef.handlerPressEnter();
+  };
+
+  handlerSearch = v => {
+    this.listCardRef.handlerSearch(v);
   };
 
   handleColumnSearch = (selectedKeys, dataIndex, confirm) => {
@@ -80,7 +84,7 @@ class DataAuditHome extends PureComponent {
         placeholder="可输入关键字查询"
         onChange={e => this.handlerSearchChange(e.target.value)}
         onSearch={this.handlerSearch}
-        onPressEnter={this.handlerSearch}
+        onPressEnter={this.handlerPressEnter}
         style={{ width: '100%' }}
       />
       <Button
