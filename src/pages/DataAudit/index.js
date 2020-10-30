@@ -107,7 +107,6 @@ class DataAuditHome extends PureComponent {
         showArrow: false,
         showSearch: false,
         rowKey: 'className',
-        allowCancelSelect: true,
         selectedKeys,
         onSelectChange: keys => {
           setSelectedKeys(keys);
