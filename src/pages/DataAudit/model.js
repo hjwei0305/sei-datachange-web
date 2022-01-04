@@ -4,8 +4,8 @@ import { getEntityNames } from './service';
 
 const { pathMatchRegexp, dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
-const startFormat = 'YYYY-MM-DD 00:00:00';
-const endFormat = 'YYYY-MM-DD 23:59:59';
+const startFormat = 'YYYY-MM-DD 00:00';
+const endFormat = 'YYYY-MM-DD 23:59';
 export default modelExtend(model, {
   namespace: 'dataAudit',
 
