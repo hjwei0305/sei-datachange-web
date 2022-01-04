@@ -4,13 +4,14 @@ import { getEntityNames } from './service';
 
 const { pathMatchRegexp, dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
-const defaultFormat = 'YYYY-MM-DD hh:mm:00';
+const startFormat = 'YYYY-MM-DD 00:00:00';
+const endFormat = 'YYYY-MM-DD 23:59:59';
 export default modelExtend(model, {
   namespace: 'dataAudit',
 
   state: {
-    startTime: moment().format(defaultFormat),
-    endTime: moment().format(defaultFormat),
+    startTime: moment().format(startFormat),
+    endTime: moment().format(endFormat),
     className: '',
     operatorName: '',
     operationCategory: '',

@@ -34,7 +34,7 @@ class FormModal extends PureComponent {
     const { getFieldDecorator } = form;
     const scopeDatePickerProps = {
       allowClear: false,
-      format: 'YYYY-MM-DD HH:mm:00',
+      format: 'YYYY-MM-DD HH:mm:ss',
       showTime: { format: 'HH:mm' },
       style: { width: 410 },
     };
